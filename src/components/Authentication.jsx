@@ -29,21 +29,17 @@ const FormLogin = ({ email, error ,pass,setPass,setEmail, handleForm, handleRegi
             </div>
 
             <div className="sign-in-button">
-                <div className="check-in" onClick={handleRegister}>
-                    {/* <input type="checkbox" id='signin' name='signin' value={''} placeholder='Keep Sign In'/> */}
-                    <p>
-                        Register
-                    </p>
-                </div>
                 <Link to={'/forgot'}>
                     <p>
                         Forgot Password?
                     </p>
                 </Link>
             </div>
-
             <button className='bt-sign-final'>
                 Login
+            </button>
+            <button className="bt-sign-final" onClick={handleRegister}>                
+                Register
             </button>
         </form>
         </>

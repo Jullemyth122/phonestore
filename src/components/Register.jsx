@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useAccount } from '../context/AccountContext'
 
-const FormLogin = ({ email,pass,setPass,setEmail, handleForm, name,setName }) => {
+const FormLogin = ({ email,pass,setPass,setEmail, handleAddAccount, name,setName }) => {
     return(
         <>
-        <form className='form-login' onSubmit={handleForm}>
+        <form className='form-login' onSubmit={handleAddAccount}>
             <div className="input-type">
                 <input 
                     type="email" 
@@ -46,7 +47,8 @@ const Register = () => {
     const [email,setEmail] = useState('')
     const [pass,setPass] = useState('')
     const [name,setName] = useState('')
-    const handleForm = async (e) => {
+
+    const handleAddAccount = async (e) => {
         e.preventDefault();
     
         const userCredentials = {
@@ -89,7 +91,7 @@ const Register = () => {
                         name={name}
                         setName={setName}
                         setPass={setPass}
-                        handleForm={handleForm}
+                        handleAddAccount={handleAddAccount}
                     />
                 </div>
             </div>

@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from 'react';
+import { useAccount } from '../context/AccountContext';
 
 const Accounts = ({ users }) => {
     const [searchTerm, setSearchTerm] = useState('');
     const [filteredUsers, setFilteredUsers] = useState(users);
+    const { handleDeleteAccount, updateAccount } = useAccount();
+    const [editedUser, setEditedUser] = useState(null); // Add state for edited user
 
     useEffect(() => {
         setFilteredUsers(
-        users.filter(
-            (user) =>
-            user.displayName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            user.email.toLowerCase().includes(searchTerm.toLowerCase())
-        )
+            users.filter(
+                (user) =>
+                    user.displayName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    user.email.toLowerCase().includes(searchTerm.toLowerCase())
+            )
         );
     }, [users, searchTerm]);
 
@@ -18,26 +21,56 @@ const Accounts = ({ users }) => {
         setSearchTerm(e.target.value);
     };
 
-    const handleDeleteAccount = async (userId) => {
-    try {
-        const response = await fetch(`http://localhost:7777/auth/delete-account/${userId}`, {
-        method: 'DELETE',
-        });
+    const handleEditButton = (user) => {
+        editAccount(user);
+    };
 
-        if (response.ok) {
-        // Account deleted successfully, you can update the UI as needed
-        // For example, you can fetch the updated list of accounts here
-        } else {
-        // Handle errors if the deletion fails
-        console.error('Error deleting account:', response.statusText);
+    // Function to save the edited user
+    const saveEditedAccount = async () => {
+        if (editedUser) {
+            // Update the user with editedUser data
+            await updateAccount(
+                editedUser._id,
+                editedUser.email,
+                editedUser.password,
+                editedUser.displayName
+            );
+
+            // Clear the edited user
+            setEditedUser(null);
         }
-    } catch (error) {
-        console.error('Error deleting account:', error);
-    }
+    };
+
+    const editAccount = (user) => {
+        setEditedUser(user);
+    };
+
+    // Function to cancel the editing process
+    const cancelEdit = () => {
+        setEditedUser(null);
     };
 
     return (
         <div className="accounts-component">
+            {editedUser && (
+                <div className="edit-form">
+                    <h2>Edit Account</h2>
+                    <label>Email:</label>
+                    <input
+                        type="text"
+                        value={editedUser.email}
+                        onChange={(e) => editAccount({ ...editedUser, email: e.target.value })}
+                    />
+                    <label>Display Name:</label>
+                    <input
+                        type="text"
+                        value={editedUser.displayName}
+                        onChange={(e) => editAccount({ ...editedUser, displayName: e.target.value })}
+                    />
+                    <button onClick={saveEditedAccount}>Save</button>
+                    <button onClick={cancelEdit}>Cancel</button>
+                </div>
+            )}
             <div className="account-subcomponent">
                 <div className="search-bar">
                     <input
@@ -46,30 +79,32 @@ const Accounts = ({ users }) => {
                         value={searchTerm}
                         onChange={handleSearch}
                     />
-                 </div>
+                </div>
                 <div className="list-of-accounts">
                     <table>
                         <thead>
                             <tr>
                                 <th>Name</th>
                                 <th>Email</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             {filteredUsers.map((user, index) => (
                                 <tr key={index}>
-                                <td>{user.displayName}</td>
-                                <td>{user.email}</td>
-                                <td>
-                                <button onClick={() => handleDeleteAccount(user._id)}>Delete</button>
-                                </td>
-
+                                    <td>{user.displayName}</td>
+                                    <td>{user.email}</td>
+                                    <td>
+                                        <button onClick={() => handleDeleteAccount(user._id)}>Delete</button>
+                                        <button onClick={() => handleEditButton(user)}>Edit</button>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
                     </table>
                 </div>
             </div>
+
         </div>
     );
 };
