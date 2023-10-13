@@ -17,7 +17,7 @@ import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Register from './components/Register';
 import Forgot from './components/Forgot';
-import Cards from './components/Cards';
+import Views from './components/Views';
 import Shops from './components/Shops';
 import AdminSide from './adminside/AdminSide';
 import Checkout from './components/Checkout';
@@ -60,7 +60,7 @@ function App() {
           <Route path='/login' element={<Authentication setUser={setUser}/>}></Route>
           <Route path='/register' element={<Register setUser={setUser}/>}></Route>
           <Route path='/forgot' element={<Forgot/>}></Route>
-          <Route path='/cards/:id' element={<Cards user={user}/>}></Route>
+          <Route path='/cards/:id' element={<Views user={user}/>}></Route>
           <Route path='/shop' element={<Shops user={user}/>}></Route>
           <Route path='/admin' element={<AdminSide/>}></Route>
           <Route path='/checkout' element={<Checkout user={user}/>}></Route>

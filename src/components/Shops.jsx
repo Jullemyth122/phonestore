@@ -96,15 +96,11 @@ const Shops = ({ user }) => {
     useEffect(() => {
         // Filter items based on all filters
         const filtered = listItem.filter((item) => 
-            (searchFilter === '' || item.name.toLowerCase().includes(searchFilter.toLowerCase())) &&
-            (brandFilter === '' || item.brand.toLowerCase().includes(brandFilter.toLowerCase())) &&
-            (modelFilter === '' || item.model.toLowerCase().includes(modelFilter.toLowerCase())) &&
-            (!selectedPriceRange || (parseFloat(item.price) >= parseFloat(selectedPriceRange.min) && parseFloat(item.price) <= parseFloat(selectedPriceRange.max))) &&
-            (!selectedSellerRange || (parseInt(item.sellers) >= selectedSellerRange.min && parseInt(item.sellers) <= selectedSellerRange.max))
+            (searchFilter === '' || item.name.toLowerCase().includes(searchFilter.toLowerCase()))
         );
     
         setFilteredItems(filtered);
-    }, [searchFilter, brandFilter, modelFilter, selectedPriceRange, selectedSellerRange, listItem]);
+    }, [searchFilter, listItem]);
     
 
     return (
@@ -218,9 +214,9 @@ const Shops = ({ user }) => {
                                             </h4>
                                         </div>
                                     </div>
-                                    <Link className="new-mark" to={`/cards/${elem.id}`} onClick={() => updateItemViews(elem.brand, elem.model)}>
+                                    <div className="new-mark" onClick={() => updateItemViews(elem.brand, elem.model)}>
                                         <h5> View </h5>
-                                    </Link>
+                                    </div>
                                 </div>
                             )
                         })}

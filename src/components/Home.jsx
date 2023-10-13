@@ -229,9 +229,9 @@ const Home = ({ user }) => {
                                             </h4>
                                         </div>
                                     </div>
-                                    <Link className="new-mark" to={`/cards/${elem.id}`} onClick={() => updateItemViews(elem.brand, elem.model)}>
+                                    <div className="new-mark" onClick={() => updateItemViews(elem.brand, elem.model)}>
                                         <h5> View </h5>
-                                    </Link>
+                                    </div>
                                 </div>
                             )
                         })}
